@@ -3,7 +3,7 @@
 echo "start tidy up films"
 source_dirs=("$HOME/Downloads/" "$HOME/Downloads/Compressed/")
 watchlist_dir="/mnt/d/film/watchlist"
-script_home="$RMR_CODE_HOME/rumaria-linux-script"
+script_home="$RMR_CODE_HOME/rumaria-linux-script/bin"
 
 for dir in ${source_dirs[*]}; do
   echo "in ${dir}"
