@@ -1,0 +1,1 @@
+/mnt/d/linux/pycharm-community-2022.1.1/bin/pycharm.sh
