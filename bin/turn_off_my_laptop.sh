@@ -14,6 +14,7 @@ patterns=(
   "/opt/google/chrome/chrome"
   "dbeaver/jre/bin/java"
   "Postman/app/postman"
+  "/opt/zoom/zoom"
 )
 
 for pattern in ${patterns[*]}; do
