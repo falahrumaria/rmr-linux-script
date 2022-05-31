@@ -22,7 +22,9 @@ for dir in ${source_dirs[*]}; do
   done
 
   # move series file and unite to one folder
-  films=($(ls | grep --ignore-case --extended-regexp "S[[:digit:]][[:digit:]]E[[:digit:]][[:digit:]].*(\.mkv|\.mp4)"))
+  films=($(ls |
+    grep --ignore-case --extended-regexp "S[[:digit:]][[:digit:]]E[[:digit:]][[:digit:]].*(\.mkv|\.mp4)")
+  )
   for film in ${films[*]}; do
     echo "bundling ${film}"
     folder=${watchlist_dir}/$(python3 $script_home/truncate_season.py ${film})_rmrscript_
@@ -32,9 +34,9 @@ for dir in ${source_dirs[*]}; do
     mv --verbose ${film} "${folder}/"
   done
 
-  # Move regular films to the watchlist directory and delete unused residual rar files.
-  # Residual rar files could be from partitioned rar files numbered 2, 3, etc whose number 1 has been successfully
-  # extracted above
+  # Move regular films to the watchlist dir and delete unused residual rar files.
+  # Residual rar files could be from partitioned rar files numbered 2, 3, etc whose number 1 has been
+  # successfully extracted above
   films=($(ls | grep --ignore-case --extended-regexp "(.*webrip.*|.*bluray.*|.*brrip.*)(\.mkv|\.mp4)"))
   for film in ${films[*]}; do
     mv --verbose ${film} "${watchlist_dir}/"
