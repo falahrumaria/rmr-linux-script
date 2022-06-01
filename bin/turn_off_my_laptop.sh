@@ -4,7 +4,7 @@ notify-send -t 15000 "killing all apps and shutting down"
 
 patterns=(
   "/usr/bin/dolphin"
-  "Telegram/Telegram"
+  "Telegram"
   "ktorrent"
   "smplayer"
   "pycharm.*/jbr/bin/java"
