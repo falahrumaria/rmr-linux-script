@@ -25,8 +25,7 @@ if [ -z $product ]; then
 fi
 
 case $product in
-"idea") ;;
-"pycharm") ;;
+"idea" | "pycharm") ;;
 *)
 	echo "wrong input!"
 	;;
@@ -39,7 +38,7 @@ if [ -z "$file_tarball" ]; then
 	echo "$product's tarball does not exist"
 	download_url=$(grep -E "url.$product.dl" $base_dir/config | awk '{print $3}')
 	echo "please download first, input url below"
-	echo "(for reference purpose, pattern will be like $download_url)"
+	echo "(for reference purpose, pattern will likely be like $download_url)"
 	read -p "input : " download_url
 	wget "$download_url"
 	if [ $? != 0 ]; then
