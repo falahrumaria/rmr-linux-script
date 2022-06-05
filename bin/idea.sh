@@ -1,1 +1,1 @@
-/d/linux/idea-IC-221.5591.52/bin/idea.sh
+/d/linux/idea-IC-221.5787.30/bin/idea.sh
