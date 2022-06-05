@@ -68,12 +68,8 @@ cur_product_dir=$(ls -d $product*)
 echo "current $product dir : " $cur_product_dir
 # remove existing dir app if exist
 if [ -n "$cur_product_dir" ]; then
-	rm -rf "$cur_product_dir"
-	while [ $? != 0 ]; do
-		echo "trying to remove $cur_product_dir again"
-		rm -rf "$cur_product_dir"
-	done
-	echo "successfully remove $cur_product_dir"
+	trash-put "$cur_product_dir"
+	echo "move $cur_product_dir to trash"
 fi
 
 # extract tarball
