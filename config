@@ -1,5 +1,0 @@
-url.idea.dl = https://download-cdn.jetbrains.com/idea/ideaIC-2022.1.2.tar.gz
-url.idea.page = https://www.jetbrains.com/idea/download/download-thanks.html?platform=linux&code=IIC
-url.pycharm.dl = https://download-cdn.jetbrains.com/python/pycharm-community-2022.1.1.tar.gz
-url.pycharm.page = https://www.jetbrains.com/pycharm/download/download-thanks.html?platform=linux&code=PCC
-url.dbeaver = https://download.dbeaver.com/community/22.0.5/dbeaver-ce-22.0.5-linux.gtk.x86_64.tar.gz
