@@ -42,8 +42,8 @@ if [ -z "$file_tarball" ]; then
 	read -p "input : " download_url
 	wget "$download_url"
 	if [ $? != 0 ]; then
-		echo "trying to open the download page"
-		echo "hopefully it will prompt the browser to download, but copy the url below because we want to download here instead for automation purpose of the next step"
+		echo "trying to open the download page, hopefully it will prompt the browser to download"
+		echo "but copy the url below because we want to download here instead for automation purpose of the next step"
 		firefox $(grep -E "url.$product.page" $base_dir/config | awk '{print $3}')
 		read -p "input : " download_url
 		wget "$download_url"
@@ -54,7 +54,8 @@ if [ -z "$file_tarball" ]; then
 		exit 1
 	fi
 	# save new download url
-	sed "s/url.$product.dl = .*/url.$product.dl = $download_url/" "$base_dir/config" > "$base_dir/config"
+	sed "s/url.$product.dl = .*/url.$product.dl = $download_url/" "$base_dir/config" > "$base_dir/config1"
+	mv "$base_dir/config1" "$base_dir/config"
 fi
 
 # close running app
