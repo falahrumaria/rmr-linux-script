@@ -1,4 +1,4 @@
-# rumaria-linux-script
+# rmr-linux-script
 
 My personal linux script.
 All these scripts are supposed to work in linux machine, create symbolic link $HOME/bin pointing to this bin and

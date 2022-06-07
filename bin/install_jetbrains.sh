@@ -4,7 +4,7 @@
 # and create sym link so that user can start it from anywhere:
 # listed product: intellij idea, pycharm
 
-base_dir=$HOME/rmr_code_repo/rumaria-linux-script
+base_dir=$HOME/rmr_code_repo/rmr-linux-script
 path_linux_app=/mnt/d/linux
 path_download=$HOME/Downloads
 
