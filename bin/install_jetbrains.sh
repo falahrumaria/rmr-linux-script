@@ -40,8 +40,7 @@ if [ -z "$file_tarball" ]; then
 	echo "please download first, input url below"
 	echo "(for reference purpose, pattern will likely be like $download_url)"
 	read -p "input : " download_url
-	wget "$download_url"
-	if [ $? != 0 ]; then
+	if ! wget "$download_url"; then
 		echo "trying to open the download page, hopefully it will prompt the browser to download"
 		echo "but copy the url below because we want to download here instead for automation purpose of the next step"
 		firefox $(grep -E "url.$product.page" $base_dir/config | awk '{print $3}')
@@ -59,9 +58,9 @@ if [ -z "$file_tarball" ]; then
 fi
 
 # close running app
-main_pid=$(ps -ef |
-	grep --max-count=1 $product.*/jbr/bin/java |
-	awk '{print $2}') # field 2 is pid
+main_pid=$(ps -ef \
+	| grep --max-count=1 $product.*/jbr/bin/java \
+	| awk '{print $2}') # field 2 is pid
 kill -9 $main_pid
 
 cd $path_linux_app
