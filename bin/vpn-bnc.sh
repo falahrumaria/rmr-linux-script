@@ -1,11 +1,23 @@
 #!/bin/bash
 
-nmcli --ask con down BNC
-if [ $? != 0 ]; then
+# bnc specific script
+
+if [ -z $1 ]; then
+	if nmcli --ask con down BNC; then
+		exit
+	fi
 	nmcli --ask con down BNC_1
-fi
-if [ $? == 0 ]; then
-    exit
+	nmcli --ask con up BNC
+	exit
 fi
 
-nmcli --ask con up BNC
+if [ $1 = "1" ]; then
+	if nmcli --ask con down BNC_1; then
+		exit
+	fi
+	nmcli --ask con down BNC
+	nmcli --ask con up BNC_1
+	exit
+fi
+
+echo "wrong argument!"
