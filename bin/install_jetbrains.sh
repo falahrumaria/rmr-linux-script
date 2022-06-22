@@ -53,7 +53,7 @@ if [ -z "$file_tarball" ]; then
         exit 1
     fi
     # save new download url
-    sed "s/url.$product.dl = .*/url.$product.dl = $download_url/" "$base_dir/config" > "$base_dir/config1"
+    sed "s|url.$product.dl = .*|url.$product.dl = $download_url|" "$base_dir/config" > "$base_dir/config1"
     mv "$base_dir/config1" "$base_dir/config"
 fi
 
