@@ -38,7 +38,7 @@ if [ -z "$file_tarball" ]; then
     echo "$product's tarball does not exist"
     download_url=$(grep -E "url.$product.dl" $base_dir/config | awk '{print $3}')
     echo "please download first, input url below"
-    echo "(for reference purpose, pattern will likely be like $download_url)"
+    echo "(for reference, sample url: $download_url)"
     read -p "input : " download_url
     if ! wget "$download_url"; then
         echo "trying to open the download page, hopefully it will prompt the browser to download"
