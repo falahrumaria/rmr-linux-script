@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import sys
 
 pure_file_names = set()
