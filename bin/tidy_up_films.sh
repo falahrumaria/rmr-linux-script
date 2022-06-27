@@ -12,6 +12,8 @@ main_name_from_partitioned_rars() {
     echo "$1" | sed s/\.part1\.rar/""/i
 }
 
+pattern=".*(webrip|bluray|brrip).*"
+
 for dir in ${source_dirs[*]}; do
     if ! cd "${dir}"; then
         continue
@@ -20,7 +22,7 @@ for dir in ${source_dirs[*]}; do
     echo "in ${dir}"
 
     # partitioned rar files
-    mapfile -t rar_files < <(ls | grep --ignore-case --perl-regexp ".*(webrip|bluray|brrip).*\.part1\.rar")
+    mapfile -t rar_files < <(ls | grep --ignore-case --perl-regexp "$pattern\.part1\.rar")
     for rar_file in ${rar_files[*]}; do
         # cut out ".part1.rar"
         main_name=$(main_name_from_partitioned_rars $rar_file)
@@ -34,8 +36,8 @@ for dir in ${source_dirs[*]}; do
 
     # single rar file
     mapfile -t rar_files < <(ls \
-        | grep --ignore-case --perl-regexp ".*(webrip|bluray|brrip).*\.rar" \
-        | grep --ignore-case --invert-match --perl-regexp '.*part\d\.rar')
+        | grep --ignore-case --perl-regexp "$pattern\.rar" \
+        | grep --invert-match --ignore-case --perl-regexp '.*part\d\.rar')
     for rar_file in ${rar_files[*]}; do
         if rar e $rar_file; then
             trash-put $rar_file
@@ -54,7 +56,7 @@ for dir in ${source_dirs[*]}; do
     done
 
     # Move regular films to the watchlist dir
-    mapfile -t films < <(ls | grep --ignore-case --perl-regexp ".*(webrip|bluray|brrip).*(\.mkv|\.mp4)")
+    mapfile -t films < <(ls | grep --ignore-case --perl-regexp "$pattern(\.mkv|\.mp4)")
     for film in ${films[*]}; do
         mv --verbose ${film} "${watchlist_dir}/"
     done
