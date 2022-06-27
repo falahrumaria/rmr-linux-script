@@ -5,7 +5,7 @@ source_dirs=("$HOME/Downloads/" "$HOME/Downloads/Compressed/")
 watchlist_dir="/mnt/d/film/watchlist"
 
 truncate_season() {
-    echo "$1" | sed s/E[[:digit:]][[:digit:]].*/""/i
+    echo "$1" | sed s/E[0-9][0-9].*/""/i
 }
 
 main_name_from_partitioned_rars() {
