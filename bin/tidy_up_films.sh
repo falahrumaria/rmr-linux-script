@@ -20,24 +20,22 @@ for dir in ${source_dirs[*]}; do
     echo "in ${dir}"
 
     # partitioned rar files
-    rar_files=(
-        $(ls | grep --ignore-case --extended-regexp "(.*webrip.*|.*bluray.*|.*brrip.*)\.part1\.rar")
-    )
+    mapfile -t rar_files < <(ls | grep --ignore-case --perl-regexp ".*(webrip|bluray|brrip).*\.part1\.rar")
     for rar_file in ${rar_files[*]}; do
         # cut out ".part1.rar"
         main_name=$(main_name_from_partitioned_rars $rar_file)
-        bundle_rars=(
-            $(ls $main_name.*.rar)
-        )
-        if rar e $bundle_rars; then
-            trash-put ${bundle_rars[*]}
+        mapfile -t bundle_rars < <(ls $main_name.part*.rar)
+        if ! rar t ${bundle_rars[0]}; then
+            continue
         fi
+        rar e ${bundle_rars[0]}
+        trash-put ${bundle_rars[*]}
     done
 
     # single rar file
-    rar_files=(
-        $(ls | grep --ignore-case --extended-regexp "(.*webrip.*|.*bluray.*|.*brrip.*)\.rar")
-    )
+    mapfile -t rar_files < <(ls \
+        | grep --ignore-case --perl-regexp ".*(webrip|bluray|brrip).*\.rar" \
+        | grep --ignore-case --invert-match --perl-regexp '.*part\d\.rar')
     for rar_file in ${rar_files[*]}; do
         if rar e $rar_file; then
             trash-put $rar_file
@@ -45,9 +43,7 @@ for dir in ${source_dirs[*]}; do
     done
 
     # move series file and unite to one folder
-    films=(
-        $(ls | grep --ignore-case --extended-regexp "S[[:digit:]][[:digit:]]E[[:digit:]][[:digit:]].*(\.mkv|\.mp4)")
-    )
+    mapfile -t films < <(ls | grep --ignore-case --perl-regexp "S\d\dE\d\d.*(\.mkv|\.mp4)")
     for film in ${films[*]}; do
         echo "bundling ${film}"
         folder="${watchlist_dir}/$(truncate_season ${film})_rmrscript_"
@@ -58,9 +54,7 @@ for dir in ${source_dirs[*]}; do
     done
 
     # Move regular films to the watchlist dir
-    films=(
-        $(ls | grep --ignore-case --extended-regexp "(.*webrip.*|.*bluray.*|.*brrip.*)(\.mkv|\.mp4)")
-    )
+    mapfile -t films < <(ls | grep --ignore-case --perl-regexp ".*(webrip|bluray|brrip).*(\.mkv|\.mp4)")
     for film in ${films[*]}; do
         mv --verbose ${film} "${watchlist_dir}/"
     done
