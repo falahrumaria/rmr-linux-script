@@ -28,22 +28,31 @@ case $product in
     "idea" | "pycharm") ;;
     *)
         echo "wrong input!"
+        exit
         ;;
 esac
+
+get_dl_url() {
+    awk "\$1 ~ /url\.$1\.dl/ { print \$3 }" $base_dir/config
+}
+
+get_page_url() {
+    awk "\$1 ~ /url\.$1\.page/ { print \$3 }" $base_dir/config
+}
 
 cd $path_download
 file_tarball=$(ls $product*.tar.gz)
 
 if [ -z "$file_tarball" ]; then
     echo "$product's tarball does not exist"
-    download_url=$(grep -E "url.$product.dl" $base_dir/config | awk '{print $3}')
+    download_url=$(get_dl_url $product)
     echo "please download first, input url below"
     echo "(for reference, sample url: $download_url)"
     read -p "input : " download_url
     if ! wget "$download_url"; then
         echo "trying to open the download page, hopefully it will prompt the browser to download"
         echo "but copy the url below because we want to download here instead for automation purpose of the next step"
-        firefox $(grep -E "url.$product.page" $base_dir/config | awk '{print $3}')
+        firefox $(get_page_url $product)
         read -p "input : " download_url
         wget "$download_url"
     fi
