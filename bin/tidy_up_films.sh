@@ -9,7 +9,7 @@ truncate_season() {
 }
 
 main_name_from_partitioned_rars() {
-    echo "$1" | sed s/\.part1\.rar/""/i
+    echo "$1" | sed s/\.part[0-9]\.rar/""/i
 }
 
 pattern=".*(webrip|bluray|brrip).*"
