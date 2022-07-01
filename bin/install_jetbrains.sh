@@ -9,7 +9,7 @@ path_linux_app=/mnt/d/linux
 path_download=$HOME/Downloads
 
 product=$1
-if [ -z $product ]; then
+if ! test $product; then
     echo "choose product:"
     echo "1. idea"
     echo "2. pycharm"
@@ -45,7 +45,7 @@ get_page_url() {
 cd $path_download || exit
 file_tarball=$(ls $product*.tar.gz)
 
-if [ -z "$file_tarball" ]; then
+if ! test "$file_tarball"; then
     echo "$product's tarball does not exist"
     echo "please download first, input new version below"
     read -p "input : "
@@ -58,7 +58,7 @@ if [ -z "$file_tarball" ]; then
         wget "$download_url"
     fi
     file_tarball=$(ls $product*.tar.gz)
-    if [ -z "$file_tarball" ]; then
+    if ! test "$file_tarball"; then
         echo "$product's tarball does not exist"
         exit 1
     fi
@@ -74,7 +74,7 @@ cd $path_linux_app || exit
 cur_product_dir=$(ls -d $product*)
 echo "current $product dir : " $cur_product_dir
 # remove existing dir app if exist
-if [ -n "$cur_product_dir" ]; then
+if test "$cur_product_dir"; then
     trash-put "$cur_product_dir"
     echo "move $cur_product_dir to trash"
 fi
