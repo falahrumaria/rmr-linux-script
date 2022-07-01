@@ -9,15 +9,19 @@ base_dir=$HOME/rmr_code_repo/rmr-linux-script
 path_linux_app=/mnt/d/linux
 path_download=$HOME/Downloads
 
-cd $path_download
+# args: new_version
+get_dl_url() {
+    awk "\$1 ~ /url\.dbeaver\.dl/ { print \$3 }" $base_dir/config | sed "s/servion/$1/g"
+}
+
+cd $path_download || exit
 file_tarball=$(ls dbeaver*.tar.gz)
 
 if [ -z "$file_tarball" ]; then
 	echo "dbeaver's tarball does not exist"
-	download_url=$(awk '$1 ~ /url\.dbeaver\.dl/ { print $3 }' $base_dir/config)
-	echo "please download first, input url below"
-	echo "(for reference, sample url: $download_url)"
-	read -p "input : " download_url
+    echo "please download first, input new version below"
+    read -p "input : "
+    download_url=$(get_dl_url "$REPLY")
 	if ! wget "$download_url"; then
 		echo "trying to open the download page, hopefully it will prompt the browser to download"
 		echo "but copy the url below because we want to download here instead for automation purpose of the next step"
@@ -41,7 +45,7 @@ main_pid=$(ps -ef \
 	| awk '{print $2}') # field 2 is pid
 kill -9 $main_pid
 
-cd $path_linux_app
+cd $path_linux_app || exit
 cur_dbeaver_dir=$(ls -d dbeaver*)
 echo "current dbeaver dir : " $cur_dbeaver_dir
 # remove existing dir app if exist

@@ -32,27 +32,28 @@ case $product in
         ;;
 esac
 
+# args: product, new_version
 get_dl_url() {
-    awk "\$1 ~ /url\.$1\.dl/ { print \$3 }" $base_dir/config
+    awk "\$1 ~ /url\.$1\.dl/ { print \$3 }" $base_dir/config | sed "s/servion/$2/g"
 }
 
+# args: product
 get_page_url() {
     awk "\$1 ~ /url\.$1\.page/ { print \$3 }" $base_dir/config
 }
 
-cd $path_download
+cd $path_download || exit
 file_tarball=$(ls $product*.tar.gz)
 
 if [ -z "$file_tarball" ]; then
     echo "$product's tarball does not exist"
-    download_url=$(get_dl_url $product)
-    echo "please download first, input url below"
-    echo "(for reference, sample url: $download_url)"
-    read -p "input : " download_url
+    echo "please download first, input new version below"
+    read -p "input : "
+    download_url=$(get_dl_url $product "$REPLY")
     if ! wget "$download_url"; then
         echo "trying to open the download page, hopefully it will prompt the browser to download"
         echo "but copy the url below because we want to download here instead for automation purpose of the next step"
-        firefox $(get_page_url $product)
+        firefox $(get_page_url "$product")
         read -p "input : " download_url
         wget "$download_url"
     fi
@@ -61,9 +62,6 @@ if [ -z "$file_tarball" ]; then
         echo "$product's tarball does not exist"
         exit 1
     fi
-    # save new download url
-    sed "s|url.$product.dl = .*|url.$product.dl = $download_url|" "$base_dir/config" > "$base_dir/config1"
-    mv "$base_dir/config1" "$base_dir/config"
 fi
 
 # close running app
@@ -72,7 +70,7 @@ main_pid=$(ps -ef \
     | awk '{print $2}') # field 2 is pid
 kill -9 $main_pid
 
-cd $path_linux_app
+cd $path_linux_app || exit
 cur_product_dir=$(ls -d $product*)
 echo "current $product dir : " $cur_product_dir
 # remove existing dir app if exist
