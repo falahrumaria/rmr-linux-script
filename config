@@ -3,3 +3,12 @@ url.idea.page = https://www.jetbrains.com/idea/download/download-thanks.html?pla
 url.pycharm.dl = https://download-cdn.jetbrains.com/python/pycharm-community-servion.tar.gz
 url.pycharm.page = https://www.jetbrains.com/pycharm/download/download-thanks.html?platform=linux&code=PCC
 url.dbeaver.dl = https://download.dbeaver.com/community/servion/dbeaver-ce-servion-linux.gtk.x86_64.tar.gz
+url.dbeaver.page = https://dbeaver.io/download/
+
+path.process.idea = idea.*/jbr/bin/java
+path.process.pycharm = pycharm.*/jbr/bin/java
+path.process.dbeaver = dbeaver/jre/bin/java
+
+path.starter.idea = idea*/bin/idea.sh
+path.starter.pycharm = pycharm*/bin/pycharm.sh
+path.starter.dbeaver = dbeaver/dbeaver
