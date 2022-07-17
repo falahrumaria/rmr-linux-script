@@ -15,9 +15,7 @@ main_name_from_partitioned_rars() {
 pattern=".*(webrip|bluray|brrip).*"
 
 for dir in ${source_dirs[*]}; do
-    if ! cd "${dir}"; then
-        continue
-    fi
+    cd "${dir}" || continue
 
     echo "in ${dir}"
 
@@ -27,9 +25,7 @@ for dir in ${source_dirs[*]}; do
         # cut out ".part1.rar"
         main_name=$(main_name_from_partitioned_rars $rar_file)
         mapfile -t bundle_rars < <(ls $main_name.part*.rar)
-        if ! rar t ${bundle_rars[0]}; then
-            continue
-        fi
+        rar t ${bundle_rars[0]} || continue
         rar e ${bundle_rars[0]}
         trash-put ${bundle_rars[*]}
     done
@@ -39,9 +35,7 @@ for dir in ${source_dirs[*]}; do
         | grep --ignore-case --perl-regexp "$pattern\.rar" \
         | grep --invert-match --ignore-case --perl-regexp '.*part\d\.rar')
     for rar_file in ${rar_files[*]}; do
-        if rar e $rar_file; then
-            trash-put $rar_file
-        fi
+        ! rar e $rar_file || trash-put $rar_file
     done
 
     # move series file and unite to one folder
@@ -49,9 +43,7 @@ for dir in ${source_dirs[*]}; do
     for film in ${films[*]}; do
         echo "bundling ${film}"
         folder="${watchlist_dir}/$(truncate_season ${film})_rmrscript_"
-        if [ ! -d ${folder} ]; then
-            mkdir ${folder}
-        fi
+        test -d ${folder} ] || mkdir ${folder}
         mv --verbose ${film} "${folder}/"
     done
 
